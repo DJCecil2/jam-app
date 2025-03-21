@@ -1,7 +1,10 @@
 ﻿import { configureStore } from "@reduxjs/toolkit";
+import instrumentsReducer from "./reducers/instruments.reducer.ts";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    instruments: instrumentsReducer,
+  },
 });
 
 export type AppStore = typeof store;
