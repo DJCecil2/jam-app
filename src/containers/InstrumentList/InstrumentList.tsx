@@ -1,42 +1,29 @@
-﻿import { useAppDispatch, useAppSelector } from "../../hooks.ts";
-import {
-  addInstrument,
-  removeInstrument,
-} from "../../reducers/instruments.reducer.ts";
-import { useState } from "react";
+﻿import { Stack } from "@mui/material";
+import { useInstruments } from "../../selectors/instruments.selectors.ts";
+import InstrumentMusicianList from "../InstrumentMusicianList/InstrumentMusicianList.tsx";
+import AddMusicianButton from "../../components/AddMusicianButton/AddMusicianButton.tsx";
 
-export function InstrumentList() {
-  const instruments = useAppSelector(({ instruments }) => instruments);
-  const dispatch = useAppDispatch();
-  const [inputValue, setInputValue] = useState("");
-
-  function handleClick() {
-    if (inputValue) {
-      dispatch(addInstrument({ name: inputValue }));
-      setInputValue("");
-    }
-  }
-
-  function handleRemove(id: string) {
-    return () => {
-      dispatch(removeInstrument({ id }));
-    };
-  }
+export default function InstrumentList() {
+  const instruments = useInstruments();
 
   return (
-    <>
-      <div>
-        {instruments.map(({ id, name }) => (
-          <div key={id} onClick={handleRemove(id)}>
-            {name}
-          </div>
-        ))}
-      </div>
-      <input
-        value={inputValue}
-        onChange={({ target: { value } }) => setInputValue(value)}
-      />
-      <button onClick={handleClick}>Make Thing</button>
-    </>
+    <Stack direction="row" flexGrow={1} justifyContent="space-around" p={2}>
+      {instruments.map((instrument) => (
+        <Stack
+          direction="column"
+          key={instrument.id}
+          spacing={2}
+          p={2}
+          justifyContent="space-between"
+        >
+          <h2>{instrument.label}</h2>
+          <InstrumentMusicianList
+            key={instrument.id}
+            instrumentId={instrument.id}
+          />
+          <AddMusicianButton instrumentIds={[instrument.id]} />
+        </Stack>
+      ))}
+    </Stack>
   );
 }

@@ -3,15 +3,39 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 export type Instrument = {
   id: string;
-  name: string;
+  label: string;
 };
 
 export type InstrumentsState = Instrument[];
 
-const initialState = [] satisfies InstrumentsState as InstrumentsState;
+/**
+ * Default values for most common use cases
+ */
+const initialState = [
+  {
+    id: nanoid(),
+    label: "Guitar",
+  },
+  {
+    id: nanoid(),
+    label: "Drums",
+  },
+  {
+    id: nanoid(),
+    label: "Bass",
+  },
+  {
+    id: nanoid(),
+    label: "Keys",
+  },
+  {
+    id: nanoid(),
+    label: "Vocals",
+  },
+] satisfies InstrumentsState as InstrumentsState;
 
 type AddInstrumentPayload = {
-  name: string;
+  label: string;
 };
 
 type RemoveInstrumentPayload = {
@@ -24,9 +48,9 @@ const instrumentSlice = createSlice({
   reducers: {
     addInstrument: (
       state,
-      { payload: { name } }: PayloadAction<AddInstrumentPayload>,
+      { payload: { label } }: PayloadAction<AddInstrumentPayload>,
     ) => {
-      state.push({ id: nanoid(), name });
+      state.push({ id: nanoid(), label });
       return state;
     },
     removeInstrument: (
