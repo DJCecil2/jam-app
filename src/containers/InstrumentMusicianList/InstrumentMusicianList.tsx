@@ -1,5 +1,6 @@
 ﻿import { Stack } from "@mui/material";
 import { useMusiciansWithInstrument } from "../../selectors/musicians.selectors.ts";
+import Musician from "../Musician/Musician.tsx";
 
 interface InstrumentMusicianListProps {
   instrumentId: string;
@@ -11,9 +12,9 @@ export default function InstrumentMusicianList({
   const musicians = useMusiciansWithInstrument(instrumentId);
 
   return (
-    <Stack direction="column" spacing={2} justifyContent="space-between" p={2}>
+    <Stack direction="column" flexGrow={1} sx={{ overflowY: "auto" }}>
       {musicians.map((musician) => (
-        <div>{musician.name}</div>
+        <Musician key={musician.id} id={musician.id} />
       ))}
     </Stack>
   );

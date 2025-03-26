@@ -7,15 +7,9 @@ export default function InstrumentList() {
   const instruments = useInstruments();
 
   return (
-    <Stack direction="row" flexGrow={1} justifyContent="space-around" p={2}>
+    <Stack direction="row" flexGrow={1} justifyContent="space-between" p={2}>
       {instruments.map((instrument) => (
-        <Stack
-          direction="column"
-          key={instrument.id}
-          spacing={2}
-          p={2}
-          justifyContent="space-between"
-        >
+        <Stack direction="column" key={instrument.id} spacing={2} p={2}>
           <h2>{instrument.label}</h2>
           <InstrumentMusicianList
             key={instrument.id}

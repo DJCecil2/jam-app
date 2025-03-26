@@ -1,4 +1,4 @@
-﻿import { FormEvent, useCallback, useState } from "react";
+﻿import { FormEvent, useState } from "react";
 import { useInstruments } from "../../selectors/instruments.selectors.ts";
 import { useAppDispatch } from "../../hooks.ts";
 import {
@@ -13,6 +13,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import { addMusician } from "../../reducers/musicians.reducer.ts";
+import useSelectedInstruments from "../../hooks/useSelectedInstruments.ts";
 
 interface AddMusicianButtonProps {
   instrumentIds?: string[];
@@ -110,32 +111,10 @@ export default function AddMusicianButton({
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button type="submit" disabled={!formIsValid}>
-            Add Slot
+            Add Musician
           </Button>
         </DialogActions>
       </Dialog>
     </>
   );
-}
-
-function useSelectedInstruments(selectedDefaults?: string[]) {
-  const instruments = useInstruments();
-  const getDefaultValue = () =>
-    instruments.reduce(
-      (acc, instrument) => ({
-        ...acc,
-        [instrument.id]: selectedDefaults?.includes(instrument.id) || false,
-      }),
-      {},
-    );
-
-  const [selectedInstruments, setSelectedInstruments] = useState<{
-    [key: string]: boolean;
-  }>(getDefaultValue);
-
-  const resetValue = useCallback(() => {
-    setSelectedInstruments(getDefaultValue());
-  }, [instruments, selectedDefaults]);
-
-  return [selectedInstruments, setSelectedInstruments, resetValue] as const;
 }

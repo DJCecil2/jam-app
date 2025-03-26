@@ -19,6 +19,10 @@ type AddMusicianPayload = {
   instrumentIds: string[];
 };
 
+type EditMusicianPayload = AddMusicianPayload & {
+  id: string;
+};
+
 type RemoveMusicianPayload = {
   id: string;
 };
@@ -35,6 +39,20 @@ const instrumentSlice = createSlice({
 
       return state;
     },
+    editMusician: (
+      state,
+      {
+        payload: { id, name, instrumentIds },
+      }: PayloadAction<EditMusicianPayload>,
+    ) => {
+      const musician = state.find((musician) => musician.id === id);
+      if (musician) {
+        musician.name = name;
+        musician.instrumentIds = instrumentIds;
+      }
+
+      return state;
+    },
     removeMusician: (
       state,
       { payload: { id } }: PayloadAction<RemoveMusicianPayload>,
@@ -44,6 +62,7 @@ const instrumentSlice = createSlice({
   },
 });
 
-export const { addMusician, removeMusician } = instrumentSlice.actions;
+export const { addMusician, editMusician, removeMusician } =
+  instrumentSlice.actions;
 
 export default instrumentSlice.reducer;
