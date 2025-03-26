@@ -1,11 +1,12 @@
 ﻿import { Stack } from "@mui/material";
-import AddJamSessionButton from "../../components/AddJamSessionButton/AddJamSessionButton.tsx";
+import AddJamSessionButton from "../AddJamSessionButton/AddJamSessionButton.tsx";
 import { useJamSessions } from "../../selectors/jamSessions.selectors.ts";
+import JamSession from "../JamSession/JamSession.tsx";
 
 export default function SessionList() {
   const jamSessions = useJamSessions();
 
-  console.log(jamSessions);
+  console.log("hello world", jamSessions);
 
   return (
     <Stack
@@ -15,6 +16,9 @@ export default function SessionList() {
       alignItems="center"
       p={2}
     >
+      {jamSessions.map((jamSession) => (
+        <JamSession key={jamSession.id} session={jamSession} />
+      ))}
       <AddJamSessionButton />
     </Stack>
   );

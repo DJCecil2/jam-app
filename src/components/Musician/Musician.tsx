@@ -5,7 +5,7 @@ import { Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import { useAppDispatch } from "../../hooks.ts";
 import { removeMusician } from "../../reducers/musicians.reducer.ts";
-import EditMusicianDialog from "../../components/EditMusicianDialog/EditMusicianDialog.tsx";
+import EditMusicianDialog from "../EditMusicianDialog/EditMusicianDialog.tsx";
 
 interface MusicianProps {
   id: string;

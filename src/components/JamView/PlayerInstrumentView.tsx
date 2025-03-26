@@ -1,6 +1,6 @@
-﻿import SessionList from "../../containers/SessionList/SessionList.tsx";
+﻿import SessionList from "../SessionList/SessionList.tsx";
 import { Grid2 as Grid } from "@mui/material";
-import InstrumentList from "../../containers/InstrumentList/InstrumentList.tsx";
+import InstrumentList from "../InstrumentList/InstrumentList.tsx";
 
 export function PlayerInstrumentView() {
   return (

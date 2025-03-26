@@ -1,8 +1,8 @@
 ﻿import { Box, Stack } from "@mui/material";
 import { useInstruments } from "../../selectors/instruments.selectors.ts";
 import InstrumentMusicianList from "../InstrumentMusicianList/InstrumentMusicianList.tsx";
-import AddMusicianButton from "../../components/AddMusicianButton/AddMusicianButton.tsx";
-import InstrumentPerSessionSelect from "../../components/InstrumentPerSessionSelect/InstrumentPerSessionSelect.tsx";
+import AddMusicianButton from "../AddMusicianButton/AddMusicianButton.tsx";
+import InstrumentPerSessionSelect from "../InstrumentPerSessionSelect/InstrumentPerSessionSelect.tsx";
 import { styled } from "@mui/material/styles";
 
 const AddMusicianButtonContainer = styled(Box)(({ theme }) => ({
