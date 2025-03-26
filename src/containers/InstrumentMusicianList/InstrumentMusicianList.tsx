@@ -12,7 +12,13 @@ export default function InstrumentMusicianList({
   const musicians = useMusiciansWithInstrument(instrumentId);
 
   return (
-    <Stack direction="column" flexGrow={1} sx={{ overflowY: "auto" }}>
+    <Stack
+      direction="column"
+      flexGrow={1}
+      sx={{ overflowY: "auto" }}
+      borderLeft="1px solid"
+      borderColor="divider"
+    >
       {musicians.map((musician) => (
         <Musician key={musician.id} id={musician.id} />
       ))}

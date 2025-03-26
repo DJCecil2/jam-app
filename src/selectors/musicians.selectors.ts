@@ -1,5 +1,9 @@
 ﻿import { useAppSelector } from "../hooks.ts";
 
+export function useMusicians() {
+  return useAppSelector(({ musicians }) => musicians);
+}
+
 export function useMusiciansWithInstrument(instrumentId: string) {
   return useAppSelector(({ musicians }) =>
     musicians.filter((m) => m.instrumentIds.includes(instrumentId)),

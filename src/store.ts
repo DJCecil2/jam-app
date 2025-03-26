@@ -1,13 +1,13 @@
 ﻿import { configureStore } from "@reduxjs/toolkit";
 import instrumentsReducer from "./reducers/instruments.reducer.ts";
-import jamslotsReducer from "./reducers/jamslots.reducer.ts";
 import musiciansReducer from "./reducers/musicians.reducer.ts";
+import jamSessionReducer from "./reducers/jamSession.reducer.ts";
 
 export const store = configureStore({
   reducer: {
     instruments: instrumentsReducer,
-    jamSlots: jamslotsReducer,
     musicians: musiciansReducer,
+    jamSessions: jamSessionReducer,
   },
 });
 
