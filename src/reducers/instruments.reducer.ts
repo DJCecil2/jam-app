@@ -37,20 +37,20 @@ const initialState = [
     id: nanoid(),
     label: "Vocals",
     perSession: 1,
-  }
+  },
 ] satisfies InstrumentsState as InstrumentsState;
 
-type AddInstrumentPayload = {
+export type AddInstrumentPayload = {
   label: string;
 };
 
-type UpdateInstrumentPayload = {
+export type UpdateInstrumentPayload = {
   id: string;
   label?: string;
   perSession?: number;
-}
+};
 
-type RemoveInstrumentPayload = {
+export type RemoveInstrumentPayload = {
   id: string;
 };
 
@@ -65,7 +65,12 @@ const instrumentSlice = createSlice({
       state.push({ id: nanoid(), label, perSession: 1 });
       return state;
     },
-    updateInstrument: (state, {payload: {id, label, perSession}}: PayloadAction<UpdateInstrumentPayload>) => {
+    updateInstrument: (
+      state,
+      {
+        payload: { id, label, perSession },
+      }: PayloadAction<UpdateInstrumentPayload>,
+    ) => {
       const instrument = state.find((instrument) => instrument.id === id);
 
       if (instrument) {
@@ -89,6 +94,7 @@ const instrumentSlice = createSlice({
   },
 });
 
-export const { addInstrument, updateInstrument, removeInstrument } = instrumentSlice.actions;
+export const { addInstrument, updateInstrument, removeInstrument } =
+  instrumentSlice.actions;
 
 export default instrumentSlice.reducer;

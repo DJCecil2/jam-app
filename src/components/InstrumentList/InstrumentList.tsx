@@ -4,8 +4,9 @@ import InstrumentMusicianList from "../InstrumentMusicianList/InstrumentMusician
 import AddMusicianButton from "../AddMusicianButton/AddMusicianButton.tsx";
 import InstrumentPerSessionSelect from "../InstrumentPerSessionSelect/InstrumentPerSessionSelect.tsx";
 import { styled } from "@mui/material/styles";
+import { RemoveInstrumentButton } from "../RemoveInstrumentButton/RemoveInstrumentButton.tsx";
 
-const AddMusicianButtonContainer = styled(Box)(({ theme }) => ({
+const FooterContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   padding: theme.spacing(2),
   borderLeft: "1px solid",
@@ -33,14 +34,15 @@ export default function InstrumentList() {
           >
             <h2>{instrument.label}</h2>
             <InstrumentPerSessionSelect instrumentId={instrument.id} />
+            <RemoveInstrumentButton instrumentId={instrument.id} />
           </Stack>
           <InstrumentMusicianList
             key={instrument.id}
             instrumentId={instrument.id}
           />
-          <AddMusicianButtonContainer>
+          <FooterContainer>
             <AddMusicianButton instrumentIds={[instrument.id]} />
-          </AddMusicianButtonContainer>
+          </FooterContainer>
         </Stack>
       ))}
     </Stack>

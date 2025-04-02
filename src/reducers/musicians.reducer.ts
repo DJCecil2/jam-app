@@ -1,5 +1,6 @@
 ﻿import { createSlice, nanoid } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { RemoveInstrumentPayload } from "./instruments.reducer.ts";
 
 export type Musician = {
   id: string;
@@ -46,6 +47,7 @@ const instrumentSlice = createSlice({
       }: PayloadAction<EditMusicianPayload>,
     ) => {
       const musician = state.find((musician) => musician.id === id);
+
       if (musician) {
         musician.name = name;
         musician.instrumentIds = instrumentIds;
@@ -58,6 +60,18 @@ const instrumentSlice = createSlice({
       { payload: { id } }: PayloadAction<RemoveMusicianPayload>,
     ) => {
       return state.filter((slot) => slot.id !== id);
+    },
+    removeInstrument: (
+      state,
+      { payload }: PayloadAction<RemoveInstrumentPayload>,
+    ) => {
+      state.forEach((musician) => {
+        musician.instrumentIds = musician.instrumentIds.filter(
+          (instrumentId) => instrumentId === payload.id,
+        );
+      });
+
+      return state;
     },
   },
 });

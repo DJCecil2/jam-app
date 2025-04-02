@@ -19,17 +19,6 @@ const initialState = [] satisfies JamSessionsState as JamSessionsState;
 
 type AddJamSessionPayload = Omit<JamSession, "id">;
 
-type AddMusicianToJamSessionPayload = {
-  jamSessionId: string;
-  musicianId: string;
-  instrumentId: string;
-};
-
-type RemoveMusicianFromJamSessionPayload = {
-  jamSessionId: string;
-  musicianId: string;
-};
-
 const jamSessionsSlice = createSlice({
   name: "JamSessions",
   initialState,
@@ -42,43 +31,9 @@ const jamSessionsSlice = createSlice({
 
       return state;
     },
-    addMusicianToJamSession: (
-      state,
-      {
-        payload: { jamSessionId, musicianId, instrumentId },
-      }: PayloadAction<AddMusicianToJamSessionPayload>,
-    ) => {
-      const jamSession = state.find(({ id }) => id === jamSessionId);
-
-      if (jamSession) {
-        jamSession.members.push({ musicianId, instrumentId });
-      }
-
-      return state;
-    },
-    removeMusicianFromJamSession: (
-      state,
-      {
-        payload: { musicianId, jamSessionId },
-      }: PayloadAction<RemoveMusicianFromJamSessionPayload>,
-    ) => {
-      const jamSession = state.find(({ id }) => id === jamSessionId);
-
-      if (jamSession) {
-        jamSession.members.filter(
-          (jamMember) => jamMember.musicianId !== musicianId,
-        );
-      }
-
-      return state;
-    },
   },
 });
 
-export const {
-  addJamSession,
-  addMusicianToJamSession,
-  removeMusicianFromJamSession,
-} = jamSessionsSlice.actions;
+export const { addJamSession } = jamSessionsSlice.actions;
 
 export default jamSessionsSlice.reducer;
