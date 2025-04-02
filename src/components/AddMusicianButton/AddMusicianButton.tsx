@@ -92,6 +92,7 @@ export default function AddMusicianButton({
             Instruments
             {instruments.map((instrument) => (
               <FormControlLabel
+                key={instrument.id}
                 control={
                   <Checkbox
                     onChange={(event) => {

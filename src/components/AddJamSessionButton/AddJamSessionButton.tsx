@@ -19,6 +19,8 @@ import { addJamSession } from "../../reducers/jamSession.reducer.ts";
 
 type SelectedMusicianValues = { [key: string]: string };
 
+const SEPARATOR = "/=/";
+
 export default function AddJamSessionButton() {
   const instruments = useInstruments();
   const [open, setOpen] = useState(false);
@@ -54,7 +56,7 @@ export default function AddJamSessionButton() {
                 addJamSession({
                   members: Object.entries(selectedMusicians).map(
                     ([inputId, musicianId]) => ({
-                      instrumentId: inputId.split("-")[0], // inputIds are {instrumentId}-{index}
+                      instrumentId: inputId.split(SEPARATOR)[0], // inputIds are {instrumentId}-{index}
                       musicianId,
                     }),
                   ),
@@ -110,7 +112,7 @@ function MusicianSelector({
 
   for (let i = 0; i < instrument.perSession; i++) {
     let label = instrument.label;
-    const inputId = `${instrument.id}-${i}`;
+    const inputId = `${instrument.id}${SEPARATOR}${i}`;
     const labelId = `${inputId}-label`;
     const value = selectedValues[inputId] || "";
 
