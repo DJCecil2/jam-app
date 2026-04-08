@@ -16,7 +16,7 @@ const MusicianContainer = styled(Button)(({ theme }) => ({
   textTransform: "none",
   justifyContent: "flex-start",
   padding: theme.spacing(1),
-  ":nth-of-type(2n)": {
+  "&:nth-of-type(even)": {
     backgroundColor: theme.palette.action.hover,
   },
 }));

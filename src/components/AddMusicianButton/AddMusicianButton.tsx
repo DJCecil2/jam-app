@@ -11,6 +11,8 @@ import {
   FormControlLabel,
   TextField,
   Checkbox,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { addMusician } from "../../reducers/musicians.reducer.ts";
 import useSelectedInstruments from "../../hooks/useSelectedInstruments.ts";
@@ -81,33 +83,42 @@ export default function AddMusicianButton({
       >
         <DialogTitle>Add Musician</DialogTitle>
         <DialogContent>
-          <TextField
-            required
-            id="musician-name-input"
-            label="Name"
-            value={musicianName}
-            onChange={({ target: { value } }) => setMusicianName(value)}
-          />
-          <FormGroup sx={{ pt: 2 }}>
-            Instruments
-            {instruments.map((instrument) => (
-              <FormControlLabel
-                key={instrument.id}
-                control={
-                  <Checkbox
-                    onChange={(event) => {
-                      setSelectedInstrumentIds((prevState) => ({
-                        ...prevState,
-                        [instrument.id]: event.target.checked,
-                      }));
-                    }}
-                    checked={selectedInstrumentIds[instrument.id]}
-                  />
-                }
-                label={instrument.label}
-              />
-            ))}
-          </FormGroup>
+          <Stack spacing={2} sx={{ mt: 1 }}>
+            <TextField
+              fullWidth
+              required
+              id="musician-name-input"
+              label="Name"
+              value={musicianName}
+              onChange={({ target: { value } }) => setMusicianName(value)}
+            />
+            <FormGroup>
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                gutterBottom
+              >
+                Instruments
+              </Typography>
+              {instruments.map((instrument) => (
+                <FormControlLabel
+                  key={instrument.id}
+                  control={
+                    <Checkbox
+                      onChange={(event) => {
+                        setSelectedInstrumentIds((prevState) => ({
+                          ...prevState,
+                          [instrument.id]: event.target.checked,
+                        }));
+                      }}
+                      checked={selectedInstrumentIds[instrument.id]}
+                    />
+                  }
+                  label={instrument.label}
+                />
+              ))}
+            </FormGroup>
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

@@ -1,6 +1,6 @@
 ﻿import { useMusician } from "../../selectors/musicians.selectors.ts";
 import { useInstrument } from "../../selectors/instruments.selectors.ts";
-import { Avatar, Stack } from "@mui/material";
+import { Avatar, Stack, Typography } from "@mui/material";
 import { stringAvatar } from "../../utils/avatar.utils.ts";
 
 interface JamSessionMemberProps {
@@ -21,9 +21,10 @@ export default function JamSessionMember({
       alignItems="center"
       justifyContent="flex-start"
       width="100%"
+      spacing={1}
     >
       <Avatar {...stringAvatar(instrument.label)} />
-      {musician.name}
+      <Typography variant="body2">{musician.name}</Typography>
     </Stack>
   );
 }

@@ -1,4 +1,5 @@
 ﻿import { useState, useEffect } from "react";
+import { Button, Stack, Typography } from "@mui/material";
 
 interface JamSessionTimerProps {
   onStop: (duration: number) => void;
@@ -34,15 +35,34 @@ export default function JamSessionTimer({ onStop }: JamSessionTimerProps) {
     setTime(0); // Reset time
   };
 
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
   return (
-    <div style={{ textAlign: "center", padding: "16px" }}>
-      <h2>{new Date(time * 1000).toISOString().substring(11, 19)}</h2>
-      <button type="button" onClick={handleStartPause}>
-        {isRunning ? "Pause" : "Start"}
-      </button>
-      <button type="button" onClick={handleStop} style={{ marginLeft: "8px" }}>
-        Stop
-      </button>
-    </div>
+    <Stack alignItems="center" spacing={1} pb={2}>
+      <Typography variant="h4" component="h2">
+        {formatTime(time)}
+      </Typography>
+      <Stack direction="row" spacing={1}>
+        <Button
+          variant="contained"
+          onClick={handleStartPause}
+          color={isRunning ? "inherit" : "primary"}
+        >
+          {isRunning ? "Pause" : "Start"}
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleStop}
+          color="error"
+          disabled={time === 0}
+        >
+          Stop
+        </Button>
+      </Stack>
+    </Stack>
   );
 }

@@ -11,6 +11,7 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import { usePopulateMockData } from "../../hooks/usePopulateMockData";
 import { useResetJam } from "../../hooks/useResetJam";
+import AddInstrumentMenuItem from "./AddInstrumentMenuItem";
 
 export default function SettingsMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -64,6 +65,7 @@ export default function SettingsMenu() {
           horizontal: "right",
         }}
       >
+        <AddInstrumentMenuItem onClose={handleClose} />
         <MenuItem onClick={handlePopulateMockData}>
           <ListItemIcon>
             <AutoFixHighIcon fontSize="small" />

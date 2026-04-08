@@ -12,6 +12,7 @@ import {
   InputLabel,
   MenuItem,
   Stack,
+  Typography,
 } from "@mui/material";
 import { useMusiciansWithInstrument } from "../../selectors/musicians.selectors.ts";
 import { Instrument } from "../../reducers/instruments.reducer.ts";
@@ -153,7 +154,9 @@ function MusicianSelector({
 
   return (
     <Stack spacing={1}>
-      <h3>{instrument.label}</h3>
+      <Typography variant="h6" component="h3">
+        {instrument.label}
+      </Typography>
       {inputs}
     </Stack>
   );

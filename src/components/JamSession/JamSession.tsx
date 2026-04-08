@@ -2,22 +2,10 @@
   JamSessionsState,
   updateJamSessionDuration,
 } from "../../reducers/jamSession.reducer.ts";
-import { Stack, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Stack, ListItem, Typography } from "@mui/material";
 import JamSessionMember from "./JamSessionMember.tsx";
 import JamSessionTimer from "./JamSessionTimer.tsx";
 import { useAppDispatch } from "../../hooks.ts";
-
-const JamSessionWrapper = styled(Stack)(({ theme }) => ({
-  width: "100%",
-  borderBottom: "1px solid",
-  borderColor: theme.palette.divider,
-  paddingBottom: theme.spacing(2),
-  marginBottom: theme.spacing(2),
-  ":nth-of-type(even)": {
-    backgroundColor: theme.palette.secondary,
-  },
-}));
 
 interface JamSessionProps {
   session: JamSessionsState[number];
@@ -34,21 +22,29 @@ export default function JamSession({
   };
 
   return (
-    <JamSessionWrapper>
-      {isCurrent && <JamSessionTimer onStop={handleStop} />}
-      {!isCurrent && session.duration !== undefined && (
-        <Typography variant="caption" align="center" sx={{ display: "block" }}>
-          Duration:{" "}
-          {new Date(session.duration * 1000).toISOString().substring(11, 19)}
-        </Typography>
-      )}
-      {session.members.map(({ musicianId, instrumentId }) => (
-        <JamSessionMember
-          key={musicianId}
-          musicianId={musicianId}
-          instrumentId={instrumentId}
-        />
-      ))}
-    </JamSessionWrapper>
+    <ListItem disablePadding sx={{ py: 1 }}>
+      <Stack width="100%" spacing={1}>
+        {isCurrent && <JamSessionTimer onStop={handleStop} />}
+        {!isCurrent && session.duration !== undefined && (
+          <Typography
+            variant="caption"
+            align="center"
+            sx={{ display: "block", color: "text.secondary", px: 2 }}
+          >
+            Duration: {Math.floor(session.duration / 60)}:
+            {(session.duration % 60).toString().padStart(2, "0")}
+          </Typography>
+        )}
+        <Stack spacing={0.5} sx={{ px: 2, pb: 1 }}>
+          {session.members.map(({ musicianId, instrumentId }) => (
+            <JamSessionMember
+              key={musicianId}
+              musicianId={musicianId}
+              instrumentId={instrumentId}
+            />
+          ))}
+        </Stack>
+      </Stack>
+    </ListItem>
   );
 }

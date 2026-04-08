@@ -67,7 +67,7 @@ const instrumentSlice = createSlice({
     ) => {
       state.forEach((musician) => {
         musician.instrumentIds = musician.instrumentIds.filter(
-          (instrumentId) => instrumentId === payload.id,
+          (instrumentId) => instrumentId !== payload.id,
         );
       });
 
