@@ -50,7 +50,7 @@ export default function EditMusicianDialog({
       slotProps={{
         paper: {
           component: "form",
-          onSubmit: (event: FormEvent<HTMLFormElement>) => {
+          onSubmit: (event: FormEvent) => {
             event.preventDefault();
             dispatch(
               editMusician({
@@ -85,6 +85,7 @@ export default function EditMusicianDialog({
           Instruments
           {instruments.map((instrument) => (
             <FormControlLabel
+              key={instrument.id}
               id={`${instrument.id}-checkbox`}
               control={
                 <Checkbox

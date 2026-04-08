@@ -3,6 +3,7 @@
 export type JamSession = {
   id: string;
   members: JamMember[];
+  duration?: number;
 };
 
 type JamMember = {
@@ -17,7 +18,12 @@ export type JamSessionsState = JamSession[];
  */
 const initialState = [] satisfies JamSessionsState as JamSessionsState;
 
-type AddJamSessionPayload = Omit<JamSession, "id">;
+type AddJamSessionPayload = Omit<JamSession, "id" | "duration">;
+
+type UpdateJamSessionDurationPayload = {
+  id: string;
+  duration: number;
+};
 
 const jamSessionsSlice = createSlice({
   name: "JamSessions",
@@ -31,9 +37,22 @@ const jamSessionsSlice = createSlice({
 
       return state;
     },
+    updateJamSessionDuration(
+      state,
+      { payload }: PayloadAction<UpdateJamSessionDurationPayload>,
+    ) {
+      const jamSession = state.find((session) => session.id === payload.id);
+
+      if (jamSession) {
+        jamSession.duration = payload.duration;
+      }
+
+      return state;
+    },
   },
 });
 
-export const { addJamSession } = jamSessionsSlice.actions;
+export const { addJamSession, updateJamSessionDuration } =
+  jamSessionsSlice.actions;
 
 export default jamSessionsSlice.reducer;

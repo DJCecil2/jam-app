@@ -1,12 +1,16 @@
 ﻿import { useAppSelector } from "../hooks.ts";
+import { useMemo } from "react";
 
 export function useMusicians() {
   return useAppSelector(({ musicians }) => musicians);
 }
 
 export function useMusiciansWithInstrument(instrumentId: string) {
-  return useAppSelector(({ musicians }) =>
-    musicians.filter((m) => m.instrumentIds.includes(instrumentId)),
+  const musicians = useMusicians();
+
+  return useMemo(
+    () => musicians.filter((m) => m.instrumentIds.includes(instrumentId)),
+    [musicians, instrumentId],
   );
 }
 

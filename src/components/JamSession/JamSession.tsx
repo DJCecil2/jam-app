@@ -1,9 +1,12 @@
-﻿import { JamSessionsState } from "../../reducers/jamSession.reducer.ts";
-import { useMusician } from "../../selectors/musicians.selectors.ts";
-import { useInstrument } from "../../selectors/instruments.selectors.ts";
-import { Avatar, Stack } from "@mui/material";
-import { stringAvatar } from "../../utils/avatar.utils.ts";
+﻿import {
+  JamSessionsState,
+  updateJamSessionDuration,
+} from "../../reducers/jamSession.reducer.ts";
+import { Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import JamSessionMember from "./JamSessionMember.tsx";
+import JamSessionTimer from "./JamSessionTimer.tsx";
+import { useAppDispatch } from "../../hooks.ts";
 
 const JamSessionWrapper = styled(Stack)(({ theme }) => ({
   width: "100%",
@@ -18,36 +21,34 @@ const JamSessionWrapper = styled(Stack)(({ theme }) => ({
 
 interface JamSessionProps {
   session: JamSessionsState[number];
+  isCurrent?: boolean;
 }
 
-export default function JamSession({ session }: JamSessionProps) {
+export default function JamSession({
+  session,
+  isCurrent = false,
+}: JamSessionProps) {
+  const dispatch = useAppDispatch();
+  const handleStop = (duration: number) => {
+    dispatch(updateJamSessionDuration({ id: session.id, duration }));
+  };
+
   return (
     <JamSessionWrapper>
+      {isCurrent && <JamSessionTimer onStop={handleStop} />}
+      {!isCurrent && session.duration !== undefined && (
+        <Typography variant="caption" align="center" sx={{ display: "block" }}>
+          Duration:{" "}
+          {new Date(session.duration * 1000).toISOString().substring(11, 19)}
+        </Typography>
+      )}
       {session.members.map(({ musicianId, instrumentId }) => (
-        <JamSessionMember musicianId={musicianId} instrumentId={instrumentId} />
+        <JamSessionMember
+          key={musicianId}
+          musicianId={musicianId}
+          instrumentId={instrumentId}
+        />
       ))}
     </JamSessionWrapper>
-  );
-}
-
-interface JamSessionMemberProps {
-  musicianId: string;
-  instrumentId: string;
-}
-
-function JamSessionMember({ musicianId, instrumentId }: JamSessionMemberProps) {
-  const musician = useMusician(musicianId);
-  const instrument = useInstrument(instrumentId);
-
-  return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      justifyContent="flex-start"
-      width="100%"
-    >
-      <Avatar {...stringAvatar(instrument.label)} />
-      {musician.name}
-    </Stack>
   );
 }

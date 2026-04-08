@@ -32,6 +32,7 @@ export default function AddMusicianButton({
   ] = useSelectedInstruments(instrumentIds);
 
   const handleClickOpen = () => {
+    setMusicianName("");
     setOpen(true);
   };
 
@@ -56,7 +57,7 @@ export default function AddMusicianButton({
         slotProps={{
           paper: {
             component: "form",
-            onSubmit: (event: FormEvent<HTMLFormElement>) => {
+            onSubmit: (event: FormEvent) => {
               event.preventDefault();
               dispatch(
                 addMusician({
@@ -70,7 +71,6 @@ export default function AddMusicianButton({
                   ),
                 }),
               );
-              setMusicianName("");
               resetSelectedInstruments();
 
               handleClose();
@@ -92,6 +92,7 @@ export default function AddMusicianButton({
             Instruments
             {instruments.map((instrument) => (
               <FormControlLabel
+                key={instrument.id}
                 control={
                   <Checkbox
                     onChange={(event) => {

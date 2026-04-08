@@ -9,7 +9,6 @@ import { RemoveInstrumentButton } from "../RemoveInstrumentButton/RemoveInstrume
 const FooterContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   padding: theme.spacing(2),
-  borderLeft: "1px solid",
   borderTop: "1px solid",
   borderColor: theme.palette.divider,
   justifyContent: "center",
@@ -22,24 +21,32 @@ export default function InstrumentList() {
   return (
     <Stack direction="row" flexGrow={1} justifyContent="space-between">
       {instruments.map((instrument) => (
-        <Stack direction="column" key={instrument.id} flexGrow={1}>
+        <Stack
+          direction="column"
+          key={instrument.id}
+          flexGrow={1}
+          minWidth={300}
+          borderLeft="1px solid"
+          borderColor="divider"
+        >
           <Stack
             direction="row"
             alignItems="center"
             justifyContent="space-between"
             p={2}
             borderBottom="1px solid"
-            borderLeft="1px solid"
             borderColor="divider"
           >
             <h2>{instrument.label}</h2>
             <InstrumentPerSessionSelect instrumentId={instrument.id} />
             <RemoveInstrumentButton instrumentId={instrument.id} />
           </Stack>
-          <InstrumentMusicianList
-            key={instrument.id}
-            instrumentId={instrument.id}
-          />
+          <Box flexGrow={1} sx={{ overflowY: "auto" }}>
+            <InstrumentMusicianList
+              key={instrument.id}
+              instrumentId={instrument.id}
+            />
+          </Box>
           <FooterContainer>
             <AddMusicianButton instrumentIds={[instrument.id]} />
           </FooterContainer>

@@ -1,17 +1,22 @@
 ﻿import SessionList from "../SessionList/SessionList.tsx";
-import { Grid2 as Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import InstrumentList from "../InstrumentList/InstrumentList.tsx";
 
 export function PlayerInstrumentView() {
   return (
-    <Grid
-      container
+    <Box
       component="main"
-      direction="row"
-      sx={{ height: "100vh", width: "100vw", overflow: "hidden" }}
+      sx={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        flexDirection: "row",
+        overflowX: "auto",
+        overflowY: "hidden",
+      }}
     >
       <InstrumentList />
       <SessionList />
-    </Grid>
+    </Box>
   );
 }
