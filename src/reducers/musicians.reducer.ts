@@ -73,10 +73,21 @@ const instrumentSlice = createSlice({
 
       return state;
     },
+    resetMusicians() {
+      return initialState;
+    },
+    populateMockMusicians(_, { payload }: PayloadAction<Musician[]>) {
+      return payload;
+    },
   },
 });
 
-export const { addMusician, editMusician, removeMusician } =
-  instrumentSlice.actions;
+export const {
+  addMusician,
+  editMusician,
+  removeMusician,
+  resetMusicians,
+  populateMockMusicians,
+} = instrumentSlice.actions;
 
 export default instrumentSlice.reducer;

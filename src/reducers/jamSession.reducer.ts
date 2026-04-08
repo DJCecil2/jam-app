@@ -49,10 +49,13 @@ const jamSessionsSlice = createSlice({
 
       return state;
     },
+    resetJamSessions() {
+      return initialState;
+    },
   },
 });
 
-export const { addJamSession, updateJamSessionDuration } =
+export const { addJamSession, updateJamSessionDuration, resetJamSessions } =
   jamSessionsSlice.actions;
 
 export default jamSessionsSlice.reducer;

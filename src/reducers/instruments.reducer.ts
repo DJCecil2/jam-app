@@ -91,10 +91,17 @@ const instrumentSlice = createSlice({
     ) => {
       return state.filter((instrument) => instrument.id !== id);
     },
+    resetInstruments() {
+      return initialState;
+    },
   },
 });
 
-export const { addInstrument, updateInstrument, removeInstrument } =
-  instrumentSlice.actions;
+export const {
+  addInstrument,
+  updateInstrument,
+  removeInstrument,
+  resetInstruments,
+} = instrumentSlice.actions;
 
 export default instrumentSlice.reducer;

@@ -2,6 +2,7 @@
 import AddJamSessionButton from "../AddJamSessionButton/AddJamSessionButton.tsx";
 import { useJamSessions } from "../../selectors/jamSessions.selectors.ts";
 import JamSession from "../JamSession/JamSession.tsx";
+import SettingsMenu from "../SettingsMenu/SettingsMenu.tsx";
 
 const FooterContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -19,6 +20,7 @@ export default function SessionList() {
     <Stack
       minWidth="15vw"
       flexShrink={0}
+      width="300px"
       borderLeft="1px solid"
       borderColor="divider"
       justifyContent="space-between"
@@ -29,6 +31,17 @@ export default function SessionList() {
         bgcolor: "background.paper",
       }}
     >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          p: 1,
+          borderBottom: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <SettingsMenu />
+      </Box>
       <Stack p={2} alignItems="center" flexGrow={1} sx={{ overflowY: "auto" }}>
         {jamSessions.map((jamSession, index) => (
           <JamSession
