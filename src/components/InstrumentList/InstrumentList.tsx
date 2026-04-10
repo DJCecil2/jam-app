@@ -25,14 +25,16 @@ export default function InstrumentList() {
       direction="row"
       flexGrow={1}
       divider={<Divider orientation="vertical" flexItem />}
+      sx={{
+        height: "100%",
+        "& > .MuiStack-root": {
+          minWidth: { xs: "85vw", sm: 400, md: 350 },
+          maxWidth: { xs: "90vw", md: "none" },
+        },
+      }}
     >
       {instruments.map((instrument) => (
-        <Stack
-          direction="column"
-          key={instrument.id}
-          flexGrow={1}
-          minWidth={300}
-        >
+        <Stack direction="column" key={instrument.id} flexGrow={1}>
           <Stack
             direction="row"
             alignItems="center"

@@ -115,7 +115,7 @@ export default function JamSessionDialog({
 
             handleClose();
           },
-          sx: { minWidth: "50vw" },
+          sx: { width: { xs: "90vw", md: "50vw" }, maxWidth: "800px" },
         },
       }}
     >

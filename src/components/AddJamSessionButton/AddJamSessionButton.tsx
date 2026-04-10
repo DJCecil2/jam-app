@@ -2,7 +2,7 @@
 import { Button } from "@mui/material";
 import JamSessionDialog from "../JamSession/JamSessionDialog";
 
-export default function AddJamSessionButton() {
+export default function AddJamSessionButton({ onAdd }: { onAdd?: () => void }) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -11,6 +11,9 @@ export default function AddJamSessionButton() {
 
   const handleClose = () => {
     setOpen(false);
+    if (onAdd) {
+      onAdd();
+    }
   };
 
   return (

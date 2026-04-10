@@ -77,7 +77,7 @@ export default function AddMusicianButton({
 
               handleClose();
             },
-            sx: { minWidth: "50vw" },
+            sx: { width: { xs: "90vw", md: "50vw" }, maxWidth: "600px" },
           },
         }}
       >

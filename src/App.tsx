@@ -9,7 +9,8 @@ import { PlayerInstrumentView } from "./components/JamView/PlayerInstrumentView"
 function App() {
   const theme = createTheme({
     palette: {
-      mode: "dark", // or dynamic
+      mode: "dark",
+      divider: "rgba(255, 255, 255, 0.08)",
     },
     components: {
       MuiCssBaseline: {

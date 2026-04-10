@@ -68,16 +68,18 @@ export default function EditMusicianDialog({
 
             handleClose();
           },
-          sx: { minWidth: "50vw" },
+          sx: { width: { xs: "90vw", md: "50vw" }, maxWidth: "600px" },
         },
       }}
     >
       <DialogTitle>Edit {musician.name}</DialogTitle>
       <DialogContent>
         <TextField
+          fullWidth
           required
           id="musician-name-input"
           label="Name"
+          sx={{ mt: 1 }}
           value={musicianName}
           onChange={({ target: { value } }) => setMusicianName(value)}
         />
