@@ -1,7 +1,9 @@
 ﻿import { useAppSelector } from "../hooks";
 
 export function useInstruments() {
-  return useAppSelector(({ instruments }) => instruments);
+  return useAppSelector(({ instruments }) =>
+    instruments.filter((i) => !i.isDeleted),
+  );
 }
 
 export function useInstrumentOptionsList() {
@@ -11,9 +13,11 @@ export function useInstrumentOptionsList() {
   }));
 }
 
-export function useInstrument(instrumentId: string) {
+export function useInstrument(instrumentId: string, includeDeleted = false) {
   const instrument = useAppSelector(({ instruments }) =>
-    instruments.find((i) => i.id === instrumentId),
+    instruments.find(
+      (i) => i.id === instrumentId && (includeDeleted || !i.isDeleted),
+    ),
   );
 
   if (!instrument)

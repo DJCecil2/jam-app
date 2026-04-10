@@ -2,7 +2,9 @@
 import { useMemo } from "react";
 
 export function useMusicians() {
-  return useAppSelector(({ musicians }) => musicians);
+  return useAppSelector(({ musicians }) =>
+    musicians.filter((m) => !m.isDeleted),
+  );
 }
 
 export function useMusiciansWithInstrument(instrumentId: string) {
@@ -14,9 +16,11 @@ export function useMusiciansWithInstrument(instrumentId: string) {
   );
 }
 
-export function useMusician(musicianId: string) {
+export function useMusician(musicianId: string, includeDeleted = false) {
   const musician = useAppSelector(({ musicians }) =>
-    musicians.find((m) => m.id === musicianId),
+    musicians.find(
+      (m) => m.id === musicianId && (includeDeleted || !m.isDeleted),
+    ),
   );
 
   if (!musician) throw new Error(`Musician with id ${musicianId} not found`);

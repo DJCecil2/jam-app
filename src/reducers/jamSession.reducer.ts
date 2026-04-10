@@ -1,4 +1,5 @@
 ﻿import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { InstrumentsState } from "./instruments.reducer";
 
 export type JamSession = {
   id: string;
@@ -26,6 +27,39 @@ type UpdateJamSessionDurationPayload = {
   duration: number;
 };
 
+type UpdateJamSessionPayload = {
+  id: string;
+  members: JamMember[];
+};
+
+type RemoveJamSessionPayload = {
+  id: string;
+};
+
+export function sortJamMembers(
+  members: JamMember[],
+  instruments: InstrumentsState,
+) {
+  const instrumentOrder = instruments.reduce(
+    (acc, inst, index) => {
+      acc[inst.id] = index;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  return [...members].sort((a, b) => {
+    const orderA = instrumentOrder[a.instrumentId] ?? Infinity;
+    const orderB = instrumentOrder[b.instrumentId] ?? Infinity;
+
+    if (orderA !== orderB) {
+      return orderA - orderB;
+    }
+
+    return 0;
+  });
+}
+
 const jamSessionsSlice = createSlice({
   name: "JamSessions",
   initialState,
@@ -35,6 +69,18 @@ const jamSessionsSlice = createSlice({
         id: nanoid(),
         ...payload,
       });
+
+      return state;
+    },
+    updateJamSession(
+      state,
+      { payload }: PayloadAction<UpdateJamSessionPayload>,
+    ) {
+      const jamSession = state.find((session) => session.id === payload.id);
+
+      if (jamSession) {
+        jamSession.members = payload.members;
+      }
 
       return state;
     },
@@ -51,13 +97,24 @@ const jamSessionsSlice = createSlice({
 
       return state;
     },
+    removeJamSession(
+      state,
+      { payload }: PayloadAction<RemoveJamSessionPayload>,
+    ) {
+      return state.filter((session) => session.id !== payload.id);
+    },
     resetJamSessions() {
       return initialState;
     },
   },
 });
 
-export const { addJamSession, updateJamSessionDuration, resetJamSessions } =
-  jamSessionsSlice.actions;
+export const {
+  addJamSession,
+  updateJamSession,
+  updateJamSessionDuration,
+  removeJamSession,
+  resetJamSessions,
+} = jamSessionsSlice.actions;
 
 export default jamSessionsSlice.reducer;

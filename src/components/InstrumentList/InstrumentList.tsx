@@ -1,10 +1,12 @@
-﻿import { Box, Stack, Typography, Divider } from "@mui/material";
+﻿import React from "react";
+import { Box, Stack, Typography, Divider, Avatar } from "@mui/material";
 import { useInstruments } from "../../selectors/instruments.selectors";
 import InstrumentMusicianList from "../InstrumentMusicianList/InstrumentMusicianList";
 import AddMusicianButton from "../AddMusicianButton/AddMusicianButton";
 import InstrumentPerSessionSelect from "../InstrumentPerSessionSelect/InstrumentPerSessionSelect";
 import { styled } from "@mui/material/styles";
 import { RemoveInstrumentButton } from "../RemoveInstrumentButton/RemoveInstrumentButton";
+import { getInstrumentIcon } from "../../utils/instrumentIcons";
 
 const FooterContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -39,9 +41,22 @@ export default function InstrumentList() {
             divider={<Divider orientation="vertical" flexItem />}
             sx={{ borderBottom: 1, borderColor: "divider" }}
           >
-            <Typography variant="h5" component="h2">
-              {instrument.label}
-            </Typography>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Avatar
+                sx={{
+                  width: 32,
+                  height: 32,
+                  bgcolor: "primary.main",
+                }}
+              >
+                {React.createElement(getInstrumentIcon(instrument.label), {
+                  sx: { fontSize: 20 },
+                })}
+              </Avatar>
+              <Typography variant="h5" component="h2">
+                {instrument.label}
+              </Typography>
+            </Stack>
             <Stack direction="row" spacing={1} alignItems="center">
               <InstrumentPerSessionSelect instrumentId={instrument.id} />
               <RemoveInstrumentButton instrumentId={instrument.id} />

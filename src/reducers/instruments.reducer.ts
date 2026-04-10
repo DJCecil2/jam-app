@@ -5,6 +5,7 @@ export type Instrument = {
   id: string;
   label: string;
   perSession: number;
+  isDeleted?: boolean;
 };
 
 export type InstrumentsState = Instrument[];
@@ -89,7 +90,13 @@ const instrumentSlice = createSlice({
       state,
       { payload: { id } }: PayloadAction<RemoveInstrumentPayload>,
     ) => {
-      return state.filter((instrument) => instrument.id !== id);
+      const instrument = state.find((instrument) => instrument.id === id);
+
+      if (instrument) {
+        instrument.isDeleted = true;
+      }
+
+      return state;
     },
     resetInstruments() {
       return initialState;

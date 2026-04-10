@@ -1,8 +1,14 @@
 ﻿import { useAppSelector } from "../hooks";
 import { useMemo } from "react";
+import { sortJamMembers } from "../reducers/jamSession.reducer";
 
 export function useJamSessions() {
-  return useAppSelector(({ jamSessions }) => jamSessions);
+  return useAppSelector(({ jamSessions, instruments }) =>
+    jamSessions.map((session) => ({
+      ...session,
+      members: sortJamMembers(session.members, instruments),
+    })),
+  );
 }
 
 export function useCompletedJamSessions() {

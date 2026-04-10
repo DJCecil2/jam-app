@@ -6,6 +6,7 @@ export type Musician = {
   id: string;
   name: string;
   instrumentIds: string[];
+  isDeleted?: boolean;
 };
 
 export type MusiciansState = Musician[];
@@ -59,7 +60,13 @@ const instrumentSlice = createSlice({
       state,
       { payload: { id } }: PayloadAction<RemoveMusicianPayload>,
     ) => {
-      return state.filter((slot) => slot.id !== id);
+      const musician = state.find((m) => m.id === id);
+
+      if (musician) {
+        musician.isDeleted = true;
+      }
+
+      return state;
     },
     removeInstrument: (
       state,
