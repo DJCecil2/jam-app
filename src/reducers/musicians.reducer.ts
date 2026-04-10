@@ -1,6 +1,6 @@
 ﻿import { createSlice, nanoid } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { RemoveInstrumentPayload } from "./instruments.reducer.ts";
+import type { RemoveInstrumentPayload } from "./instruments.reducer";
 
 export type Musician = {
   id: string;

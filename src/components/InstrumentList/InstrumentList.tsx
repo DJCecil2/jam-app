@@ -1,10 +1,10 @@
 ﻿import { Box, Stack, Typography, Divider } from "@mui/material";
-import { useInstruments } from "../../selectors/instruments.selectors.ts";
-import InstrumentMusicianList from "../InstrumentMusicianList/InstrumentMusicianList.tsx";
-import AddMusicianButton from "../AddMusicianButton/AddMusicianButton.tsx";
-import InstrumentPerSessionSelect from "../InstrumentPerSessionSelect/InstrumentPerSessionSelect.tsx";
+import { useInstruments } from "../../selectors/instruments.selectors";
+import InstrumentMusicianList from "../InstrumentMusicianList/InstrumentMusicianList";
+import AddMusicianButton from "../AddMusicianButton/AddMusicianButton";
+import InstrumentPerSessionSelect from "../InstrumentPerSessionSelect/InstrumentPerSessionSelect";
 import { styled } from "@mui/material/styles";
-import { RemoveInstrumentButton } from "../RemoveInstrumentButton/RemoveInstrumentButton.tsx";
+import { RemoveInstrumentButton } from "../RemoveInstrumentButton/RemoveInstrumentButton";
 
 const FooterContainer = styled(Box)(({ theme }) => ({
   display: "flex",

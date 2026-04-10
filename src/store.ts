@@ -1,8 +1,8 @@
 ﻿import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import instrumentsReducer from "./reducers/instruments.reducer.ts";
-import musiciansReducer from "./reducers/musicians.reducer.ts";
-import jamSessionReducer from "./reducers/jamSession.reducer.ts";
-import { loadState, saveState } from "./utils/localStorage.ts";
+import instrumentsReducer from "./reducers/instruments.reducer";
+import musiciansReducer from "./reducers/musicians.reducer";
+import jamSessionReducer from "./reducers/jamSession.reducer";
+import { loadState, saveState } from "./utils/localStorage";
 
 const rootReducer = combineReducers({
   instruments: instrumentsReducer,

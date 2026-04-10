@@ -1,4 +1,4 @@
-﻿import { useAppSelector } from "../hooks.ts";
+﻿import { useAppSelector } from "../hooks";
 import { useMemo } from "react";
 
 export function useJamSessions() {
@@ -8,7 +8,10 @@ export function useJamSessions() {
 export function useCompletedJamSessions() {
   const jamSessions = useJamSessions();
   return useMemo(
-    () => jamSessions.filter((session) => session.duration !== undefined),
+    () =>
+      jamSessions
+        .filter((session) => session.duration !== undefined)
+        .sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0)),
     [jamSessions],
   );
 }

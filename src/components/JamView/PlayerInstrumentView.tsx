@@ -1,6 +1,6 @@
-﻿import SessionList from "../SessionList/SessionList.tsx";
+﻿import SessionList from "../SessionList/SessionList";
 import { Box } from "@mui/material";
-import InstrumentList from "../InstrumentList/InstrumentList.tsx";
+import InstrumentList from "../InstrumentList/InstrumentList";
 
 export function PlayerInstrumentView() {
   return (

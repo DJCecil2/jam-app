@@ -1,4 +1,4 @@
-﻿import { useAppSelector } from "../hooks.ts";
+﻿import { useAppSelector } from "../hooks";
 
 export function useInstruments() {
   return useAppSelector(({ instruments }) => instruments);

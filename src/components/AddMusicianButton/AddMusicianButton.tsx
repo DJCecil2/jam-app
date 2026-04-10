@@ -1,6 +1,6 @@
 ﻿import { FormEvent, useState } from "react";
-import { useInstruments } from "../../selectors/instruments.selectors.ts";
-import { useAppDispatch } from "../../hooks.ts";
+import { useInstruments } from "../../selectors/instruments.selectors";
+import { useAppDispatch } from "../../hooks";
 import {
   Button,
   Dialog,
@@ -14,8 +14,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { addMusician } from "../../reducers/musicians.reducer.ts";
-import useSelectedInstruments from "../../hooks/useSelectedInstruments.ts";
+import { addMusician } from "../../reducers/musicians.reducer";
+import useSelectedInstruments from "../../hooks/useSelectedInstruments";
 
 interface AddMusicianButtonProps {
   instrumentIds?: string[];

@@ -1,7 +1,7 @@
-﻿import { useMusician } from "../../selectors/musicians.selectors.ts";
-import { useInstrument } from "../../selectors/instruments.selectors.ts";
+﻿import { useMusician } from "../../selectors/musicians.selectors";
+import { useInstrument } from "../../selectors/instruments.selectors";
 import { Avatar, Stack, Typography } from "@mui/material";
-import { stringAvatar } from "../../utils/avatar.utils.ts";
+import { stringAvatar } from "../../utils/avatar.utils";
 
 interface JamSessionMemberProps {
   musicianId: string;

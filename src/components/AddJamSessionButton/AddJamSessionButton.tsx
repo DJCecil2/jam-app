@@ -1,6 +1,6 @@
 ﻿import { FormEvent, useState } from "react";
-import { useInstruments } from "../../selectors/instruments.selectors.ts";
-import { useAppDispatch } from "../../hooks.ts";
+import { useInstruments } from "../../selectors/instruments.selectors";
+import { useAppDispatch } from "../../hooks";
 import {
   Button,
   Dialog,
@@ -13,10 +13,12 @@ import {
   MenuItem,
   Stack,
   Typography,
+  Chip,
 } from "@mui/material";
-import { useMusiciansWithInstrument } from "../../selectors/musicians.selectors.ts";
-import { Instrument } from "../../reducers/instruments.reducer.ts";
-import { addJamSession } from "../../reducers/jamSession.reducer.ts";
+import { Instrument } from "../../reducers/instruments.reducer";
+import { addJamSession } from "../../reducers/jamSession.reducer";
+import { useEnrichedMusiciansForInstrument } from "../../selectors/recommendations.selectors";
+import { formatTime } from "../../utils/time.utils";
 
 type SelectedMusicianValues = { [key: string]: string };
 
@@ -113,7 +115,7 @@ function MusicianSelector({
   selectedValues,
   onChange,
 }: MusicianSelectorProps) {
-  const musicians = useMusiciansWithInstrument(instrument.id);
+  const musicians = useEnrichedMusiciansForInstrument(instrument.id);
   const inputs = [];
 
   for (let i = 0; i < instrument.perSession; i++) {
@@ -144,7 +146,29 @@ function MusicianSelector({
               value={musician.id}
               disabled={Object.values(selectedValues).includes(musician.id)}
             >
-              {musician.name}
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="space-between"
+                width="100%"
+              >
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <Typography>{musician.name}</Typography>
+                  {musician.isRecommended && (
+                    <Chip
+                      label="Recommended"
+                      color="success"
+                      size="small"
+                      variant="outlined"
+                    />
+                  )}
+                </Stack>
+                <Typography variant="caption" color="text.secondary">
+                  {instrument.label}: {musician.stats.instrumentCount} | Total:{" "}
+                  {formatTime(musician.stats.totalDuration)}
+                </Typography>
+              </Stack>
             </MenuItem>
           ))}
         </Select>

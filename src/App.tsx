@@ -4,7 +4,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-import { PlayerInstrumentView } from "./components/JamView/PlayerInstrumentView.tsx";
+import { PlayerInstrumentView } from "./components/JamView/PlayerInstrumentView";
 
 function App() {
   const theme = createTheme({

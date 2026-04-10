@@ -1,11 +1,12 @@
 ﻿import {
   JamSessionsState,
   updateJamSessionDuration,
-} from "../../reducers/jamSession.reducer.ts";
+} from "../../reducers/jamSession.reducer";
 import { Stack, ListItem, Typography } from "@mui/material";
-import JamSessionMember from "./JamSessionMember.tsx";
-import JamSessionTimer from "./JamSessionTimer.tsx";
-import { useAppDispatch } from "../../hooks.ts";
+import JamSessionMember from "./JamSessionMember";
+import JamSessionTimer from "./JamSessionTimer";
+import { useAppDispatch } from "../../hooks";
+import { formatTime } from "../../utils/time.utils";
 
 interface JamSessionProps {
   session: JamSessionsState[number];
@@ -31,8 +32,7 @@ export default function JamSession({
             align="center"
             sx={{ display: "block", color: "text.secondary", px: 2 }}
           >
-            Duration: {Math.floor(session.duration / 60)}:
-            {(session.duration % 60).toString().padStart(2, "0")}
+            Duration: {formatTime(session.duration)}
           </Typography>
         )}
         <Stack spacing={0.5} sx={{ px: 2, pb: 1 }}>

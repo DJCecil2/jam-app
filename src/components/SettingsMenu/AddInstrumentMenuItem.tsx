@@ -11,8 +11,8 @@ import {
   TextField,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useAppDispatch } from "../../hooks.ts";
-import { addInstrument } from "../../reducers/instruments.reducer.ts";
+import { useAppDispatch } from "../../hooks";
+import { addInstrument } from "../../reducers/instruments.reducer";
 
 interface AddInstrumentMenuItemProps {
   onClose: () => void;

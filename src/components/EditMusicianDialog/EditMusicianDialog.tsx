@@ -1,5 +1,5 @@
 ﻿import { FormEvent, useEffect, useState } from "react";
-import { editMusician } from "../../reducers/musicians.reducer.ts";
+import { editMusician } from "../../reducers/musicians.reducer";
 import {
   Button,
   Checkbox,
@@ -11,10 +11,10 @@ import {
   FormGroup,
   TextField,
 } from "@mui/material";
-import { useMusician } from "../../selectors/musicians.selectors.ts";
-import useSelectedInstruments from "../../hooks/useSelectedInstruments.ts";
-import { useAppDispatch } from "../../hooks.ts";
-import { useInstruments } from "../../selectors/instruments.selectors.ts";
+import { useMusician } from "../../selectors/musicians.selectors";
+import useSelectedInstruments from "../../hooks/useSelectedInstruments";
+import { useAppDispatch } from "../../hooks";
+import { useInstruments } from "../../selectors/instruments.selectors";
 
 interface EditMusicianDialogProps {
   musicianId: string;

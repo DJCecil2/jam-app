@@ -1,4 +1,4 @@
-﻿import { useInstruments } from "../selectors/instruments.selectors.ts";
+﻿import { useInstruments } from "../selectors/instruments.selectors";
 import { useCallback, useState } from "react";
 
 export default function useSelectedInstruments(selectedDefaults?: string[]) {

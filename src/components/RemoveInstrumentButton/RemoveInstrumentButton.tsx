@@ -1,7 +1,7 @@
 ﻿import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
-import { removeInstrument } from "../../reducers/instruments.reducer.ts";
+import { removeInstrument } from "../../reducers/instruments.reducer";
 
 interface RemoveInstrumentButtonProps {
   instrumentId: string;

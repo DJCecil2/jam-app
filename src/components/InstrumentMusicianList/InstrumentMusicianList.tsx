@@ -1,6 +1,6 @@
 ﻿import { Stack } from "@mui/material";
-import { useMusiciansWithInstrument } from "../../selectors/musicians.selectors.ts";
-import Musician from "../Musician/Musician.tsx";
+import { useMusiciansWithInstrument } from "../../selectors/musicians.selectors";
+import Musician from "../Musician/Musician";
 
 interface InstrumentMusicianListProps {
   instrumentId: string;

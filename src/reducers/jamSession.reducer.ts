@@ -4,6 +4,7 @@ export type JamSession = {
   id: string;
   members: JamMember[];
   duration?: number;
+  completedAt?: number;
 };
 
 type JamMember = {
@@ -45,6 +46,7 @@ const jamSessionsSlice = createSlice({
 
       if (jamSession) {
         jamSession.duration = payload.duration;
+        jamSession.completedAt = Date.now();
       }
 
       return state;

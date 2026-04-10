@@ -1,6 +1,8 @@
 ﻿import { useState, useEffect } from "react";
 import { Button, Stack, Typography } from "@mui/material";
 
+import { formatTime } from "../../utils/time.utils";
+
 interface JamSessionTimerProps {
   onStop: (duration: number) => void;
 }
@@ -33,12 +35,6 @@ export default function JamSessionTimer({ onStop }: JamSessionTimerProps) {
     setIsRunning(false); // Stop the timer
     onStop(time);
     setTime(0); // Reset time
-  };
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (

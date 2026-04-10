@@ -1,4 +1,4 @@
-﻿import { useAppSelector } from "../hooks.ts";
+﻿import { useAppSelector } from "../hooks";
 import { useMemo } from "react";
 
 export function useMusicians() {

@@ -8,13 +8,13 @@
   Tabs,
   Typography,
 } from "@mui/material";
-import AddJamSessionButton from "../AddJamSessionButton/AddJamSessionButton.tsx";
+import AddJamSessionButton from "../AddJamSessionButton/AddJamSessionButton";
 import {
   useCompletedJamSessions,
   useUpcomingJamSessions,
-} from "../../selectors/jamSessions.selectors.ts";
-import JamSession from "../JamSession/JamSession.tsx";
-import SettingsMenu from "../SettingsMenu/SettingsMenu.tsx";
+} from "../../selectors/jamSessions.selectors";
+import JamSession from "../JamSession/JamSession";
+import SettingsMenu from "../SettingsMenu/SettingsMenu";
 import React, { Fragment, useState } from "react";
 
 const FooterContainer = styled(Box)(({ theme }) => ({

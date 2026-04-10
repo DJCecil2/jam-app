@@ -1,11 +1,11 @@
 ﻿import { MouseEvent } from "react";
-import { useMusician } from "../../selectors/musicians.selectors.ts";
+import { useMusician } from "../../selectors/musicians.selectors";
 import { styled } from "@mui/material/styles";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
-import { useAppDispatch } from "../../hooks.ts";
-import { removeMusician } from "../../reducers/musicians.reducer.ts";
-import EditMusicianDialog from "../EditMusicianDialog/EditMusicianDialog.tsx";
+import { useAppDispatch } from "../../hooks";
+import { removeMusician } from "../../reducers/musicians.reducer";
+import EditMusicianDialog from "../EditMusicianDialog/EditMusicianDialog";
 
 interface MusicianProps {
   id: string;

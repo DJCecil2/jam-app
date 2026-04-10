@@ -1,7 +1,7 @@
-﻿import { useInstrument } from "../../selectors/instruments.selectors.ts";
-import { useAppDispatch } from "../../hooks.ts";
+﻿import { useInstrument } from "../../selectors/instruments.selectors";
+import { useAppDispatch } from "../../hooks";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { updateInstrument } from "../../reducers/instruments.reducer.ts";
+import { updateInstrument } from "../../reducers/instruments.reducer";
 
 interface InstrumentPerSessionSelectProps {
   instrumentId: string;
