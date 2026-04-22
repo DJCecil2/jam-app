@@ -2,18 +2,16 @@
 import { useInstruments } from "../../selectors/instruments.selectors";
 import { useAppDispatch } from "../../hooks";
 import {
+  Autocomplete,
   Button,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
   Stack,
+  TextField,
   Typography,
-  Chip,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Instrument } from "../../reducers/instruments.reducer";
@@ -167,7 +165,6 @@ function MusicianSelector({
   for (let i = 0; i < instrument.perSession; i++) {
     let label = instrument.label;
     const inputId = `${instrument.id}${SEPARATOR}${i}`;
-    const labelId = `${inputId}-label`;
     const value = selectedValues[inputId] || "";
 
     if (instrument.perSession > 1) {
@@ -175,23 +172,26 @@ function MusicianSelector({
     }
 
     inputs.push(
-      <FormControl fullWidth key={inputId}>
-        <InputLabel id={labelId}>{label}</InputLabel>
-        <Select
-          labelId={labelId}
-          id={inputId}
-          label={label}
-          onChange={(event) => {
-            onChange(inputId, event.target.value as string);
-          }}
-          value={value}
-        >
-          {musicians.map((musician) => (
-            <MenuItem
-              key={musician.id}
-              value={musician.id}
-              disabled={Object.values(selectedValues).includes(musician.id)}
-            >
+      <Autocomplete
+        key={inputId}
+        id={inputId}
+        options={musicians}
+        fullWidth
+        getOptionLabel={(musician) => musician.name}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        value={musicians.find((m) => m.id === value) || null}
+        onChange={(_, newValue) => {
+          onChange(inputId, newValue ? newValue.id : "");
+        }}
+        getOptionDisabled={(musician) =>
+          Object.values(selectedValues).includes(musician.id) &&
+          musician.id !== value
+        }
+        renderInput={(params) => <TextField {...params} label={label} />}
+        renderOption={(props, musician) => {
+          const { key, ...optionProps } = props;
+          return (
+            <li key={key} {...optionProps}>
               <Stack
                 direction="row"
                 spacing={1}
@@ -231,10 +231,10 @@ function MusicianSelector({
                   | Total: {formatTime(musician.stats.totalDuration)}
                 </Typography>
               </Stack>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>,
+            </li>
+          );
+        }}
+      />,
     );
   }
 
