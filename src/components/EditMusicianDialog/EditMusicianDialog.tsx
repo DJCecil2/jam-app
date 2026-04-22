@@ -10,11 +10,13 @@ import {
   FormControlLabel,
   FormGroup,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useMusician } from "../../selectors/musicians.selectors";
 import useSelectedInstruments from "../../hooks/useSelectedInstruments";
 import { useAppDispatch } from "../../hooks";
 import { useInstruments } from "../../selectors/instruments.selectors";
+import { useMusicianStatsMap } from "../../selectors/recommendations.selectors";
 
 interface EditMusicianDialogProps {
   musicianId: string;
@@ -30,6 +32,8 @@ export default function EditMusicianDialog({
   const dispatch = useAppDispatch();
   const musician = useMusician(musicianId);
   const instruments = useInstruments();
+  const statsMap = useMusicianStatsMap();
+  const lastPlayedAt = statsMap[musicianId]?.lastPlayedAt;
   const [musicianName, setMusicianName] = useState(musician.name);
   const [selectedInstrumentIds, setSelectedInstrumentIds] =
     useSelectedInstruments(musician.instrumentIds);
@@ -83,6 +87,10 @@ export default function EditMusicianDialog({
           value={musicianName}
           onChange={({ target: { value } }) => setMusicianName(value)}
         />
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          Last played:{" "}
+          {lastPlayedAt ? new Date(lastPlayedAt).toLocaleString() : "Never"}
+        </Typography>
         <FormGroup sx={{ pt: 2 }}>
           Instruments
           {instruments.map((instrument) => (

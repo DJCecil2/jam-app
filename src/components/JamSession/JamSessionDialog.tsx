@@ -15,6 +15,7 @@ import {
   Typography,
   Chip,
 } from "@mui/material";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Instrument } from "../../reducers/instruments.reducer";
 import {
   addJamSession,
@@ -197,6 +198,7 @@ function MusicianSelector({
                 alignItems="center"
                 justifyContent="space-between"
                 width="100%"
+                sx={{ opacity: musician.isInUpcoming ? 0.5 : 1 }}
               >
                 <Stack direction="row" spacing={1} alignItems="center">
                   <Typography>{musician.name}</Typography>
@@ -208,10 +210,25 @@ function MusicianSelector({
                       variant="outlined"
                     />
                   )}
+                  {musician.isInUpcoming && (
+                    <Chip
+                      icon={
+                        <AccessTimeIcon sx={{ fontSize: "16px !important" }} />
+                      }
+                      label="Queued"
+                      size="small"
+                      variant="outlined"
+                    />
+                  )}
                 </Stack>
                 <Typography variant="caption" color="text.secondary">
-                  {instrument.label}: {musician.stats.instrumentCount} | Total:{" "}
-                  {formatTime(musician.stats.totalDuration)}
+                  {instrument.label}: {musician.stats.instrumentCount}
+                  {musician.stats.upcomingInstrumentCount > 0 &&
+                    ` (+${musician.stats.upcomingInstrumentCount} queued)`}{" "}
+                  | Sessions: {musician.stats.totalSessions}
+                  {musician.stats.upcomingSessionsCount > 0 &&
+                    ` (+${musician.stats.upcomingSessionsCount} queued)`}{" "}
+                  | Total: {formatTime(musician.stats.totalDuration)}
                 </Typography>
               </Stack>
             </MenuItem>
