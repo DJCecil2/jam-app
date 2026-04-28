@@ -4,6 +4,8 @@ import { InstrumentsState } from "./instruments.reducer";
 export type JamSession = {
   id: string;
   members: JamMember[];
+  startedAt?: number;
+  pausedDuration?: number;
   duration?: number;
   completedAt?: number;
 };
@@ -20,11 +22,21 @@ export type JamSessionsState = JamSession[];
  */
 const initialState = [] satisfies JamSessionsState as JamSessionsState;
 
-type AddJamSessionPayload = Omit<JamSession, "id" | "duration">;
+type AddJamSessionPayload = Omit<JamSession, "id" | "duration" | "startedAt">;
 
 type UpdateJamSessionDurationPayload = {
   id: string;
   duration: number;
+};
+
+type StartJamSessionPayload = {
+  id: string;
+  startedAt: number;
+};
+
+type PauseJamSessionPayload = {
+  id: string;
+  pausedDuration: number;
 };
 
 type UpdateJamSessionPayload = {
@@ -92,7 +104,29 @@ const jamSessionsSlice = createSlice({
 
       if (jamSession) {
         jamSession.duration = payload.duration;
+        jamSession.startedAt = undefined;
+        jamSession.pausedDuration = undefined;
         jamSession.completedAt = Date.now();
+      }
+
+      return state;
+    },
+    startJamSession(state, { payload }: PayloadAction<StartJamSessionPayload>) {
+      const jamSession = state.find((session) => session.id === payload.id);
+
+      if (jamSession) {
+        jamSession.startedAt = payload.startedAt;
+        jamSession.pausedDuration = undefined;
+      }
+
+      return state;
+    },
+    pauseJamSession(state, { payload }: PayloadAction<PauseJamSessionPayload>) {
+      const jamSession = state.find((session) => session.id === payload.id);
+
+      if (jamSession) {
+        jamSession.startedAt = undefined;
+        jamSession.pausedDuration = payload.pausedDuration;
       }
 
       return state;
@@ -113,6 +147,8 @@ export const {
   addJamSession,
   updateJamSession,
   updateJamSessionDuration,
+  startJamSession,
+  pauseJamSession,
   removeJamSession,
   resetJamSessions,
 } = jamSessionsSlice.actions;

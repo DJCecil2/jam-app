@@ -5,19 +5,46 @@ import { formatTime } from "../../utils/time.utils";
 
 interface JamSessionTimerProps {
   onStop: (duration: number) => void;
+  onStart?: (startedAt: number) => void;
+  onPause?: (pausedDuration: number) => void;
   onTimeChange?: (time: number) => void;
   disabled?: boolean;
   disabledReason?: string;
+  startedAt?: number;
+  pausedDuration?: number;
 }
 
 export default function JamSessionTimer({
   onStop,
+  onStart,
+  onPause,
   onTimeChange,
   disabled = false,
   disabledReason = "Cannot start a session with deleted musicians",
+  startedAt,
+  pausedDuration,
 }: JamSessionTimerProps) {
-  const [time, setTime] = useState(0); // Timer value in seconds
-  const [isRunning, setIsRunning] = useState(false);
+  const [time, setTime] = useState(
+    startedAt
+      ? Math.floor((Date.now() - startedAt) / 1000)
+      : (pausedDuration ?? 0),
+  );
+  const [isRunning, setIsRunning] = useState(Boolean(startedAt));
+
+  useEffect(() => {
+    if (startedAt) {
+      const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+      setTime(elapsed);
+      onTimeChange?.(elapsed);
+      setIsRunning(true);
+      return;
+    }
+
+    const pausedElapsed = pausedDuration ?? 0;
+    setTime(pausedElapsed);
+    onTimeChange?.(pausedElapsed);
+    setIsRunning(false);
+  }, [onTimeChange, pausedDuration, startedAt]);
 
   // Effect to handle the timer updates
   useEffect(() => {
@@ -40,7 +67,15 @@ export default function JamSessionTimer({
   }, [onTimeChange, isRunning]);
 
   const handleStartPause = () => {
-    setIsRunning((prev) => !prev); // Toggle running state
+    if (isRunning) {
+      setIsRunning(false);
+      onPause?.(time);
+      return;
+    }
+
+    const resumedStartedAt = Date.now() - time * 1000;
+    onStart?.(resumedStartedAt);
+    setIsRunning(true);
   };
 
   const handleStop = () => {

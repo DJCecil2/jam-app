@@ -1,6 +1,8 @@
 ﻿import {
   JamSessionsState,
+  pauseJamSession,
   removeJamSession,
+  startJamSession,
   updateJamSessionDuration,
 } from "../../reducers/jamSession.reducer";
 import {
@@ -56,6 +58,14 @@ export default function JamSession({
 
   const handleStop = (duration: number) => {
     dispatch(updateJamSessionDuration({ id: session.id, duration }));
+  };
+
+  const handleStart = (startedAt: number) => {
+    dispatch(startJamSession({ id: session.id, startedAt }));
+  };
+
+  const handlePause = (pausedDuration: number) => {
+    dispatch(pauseJamSession({ id: session.id, pausedDuration }));
   };
 
   const isUpcoming = session.duration === undefined;
@@ -142,9 +152,13 @@ export default function JamSession({
           {isCurrent && (
             <JamSessionTimer
               onStop={handleStop}
+              onStart={handleStart}
+              onPause={handlePause}
               onTimeChange={setCurrentTime}
               disabled={!!disabledReason}
               disabledReason={disabledReason || undefined}
+              startedAt={session.startedAt}
+              pausedDuration={session.pausedDuration}
             />
           )}
           {!isCurrent && session.duration !== undefined && (
