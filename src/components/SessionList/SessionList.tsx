@@ -1,13 +1,10 @@
 ﻿import {
   Box,
-  Divider,
   IconButton,
-  List,
   Stack,
   styled,
   Tab,
   Tabs,
-  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -16,11 +13,15 @@ import {
   useCompletedJamSessions,
   useUpcomingJamSessions,
 } from "../../selectors/jamSessions.selectors";
-import JamSession from "../JamSession/JamSession";
+import { reorderJamSessions } from "../../reducers/jamSession.reducer";
 import SettingsMenu from "../SettingsMenu/SettingsMenu";
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useAppDispatch } from "../../hooks";
+import CurrentSessionSection from "./CurrentSessionSection";
+import UpcomingSessionsList from "./UpcomingSessionsList";
+import CompletedSessionsList from "./CompletedSessionsList";
 
 const FooterContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -36,10 +37,12 @@ interface SessionListProps {
 }
 
 export default function SessionList({ onAction }: SessionListProps) {
+  const dispatch = useAppDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [tabValue, setTabValue] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [draggedSessionId, setDraggedSessionId] = useState<string | null>(null);
   const upcomingJamSessions = useUpcomingJamSessions();
   const completedJamSessions = useCompletedJamSessions();
 
@@ -55,11 +58,51 @@ export default function SessionList({ onAction }: SessionListProps) {
 
   const currentJam =
     upcomingJamSessions.length > 0 ? upcomingJamSessions[0] : null;
+  const isCurrentSessionReorderLocked =
+    currentJam !== null &&
+    (currentJam.startedAt !== undefined || (currentJam.pausedDuration ?? 0) > 0);
+  const upcomingSessions = upcomingJamSessions.filter(
+    (session) => session.id !== currentJam?.id,
+  );
 
-  const filteredSessions =
-    tabValue === 0
-      ? upcomingJamSessions.filter((session) => session.id !== currentJam?.id)
-      : completedJamSessions;
+  const isUpcomingTab = tabValue === 0;
+
+  const handleDragStart =
+    (sessionId: string) => (event: React.DragEvent<HTMLDivElement>) => {
+      setDraggedSessionId(sessionId);
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/plain", sessionId);
+    };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  };
+
+  const handleDrop =
+    (targetSessionId: string) => (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+
+      const sourceSessionId =
+        draggedSessionId || event.dataTransfer.getData("text/plain");
+
+      if (!sourceSessionId || sourceSessionId === targetSessionId) {
+        setDraggedSessionId(null);
+        return;
+      }
+
+      dispatch(
+        reorderJamSessions({
+          sourceId: sourceSessionId,
+          targetId: targetSessionId,
+        }),
+      );
+      setDraggedSessionId(null);
+    };
+
+  const handleDragEnd = () => {
+    setDraggedSessionId(null);
+  };
 
   const effectivelyCollapsed = isCollapsed && !isMobile;
 
@@ -112,26 +155,16 @@ export default function SessionList({ onAction }: SessionListProps) {
           overflow: "hidden",
         }}
       >
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <List disablePadding>
-            {currentJam ? (
-              <JamSession session={currentJam} isCurrent={true} />
-            ) : (
-              <Box
-                sx={{
-                  height: 60,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography variant="body2" color="text.secondary">
-                  No active jam
-                </Typography>
-              </Box>
-            )}
-          </List>
-        </Box>
+        <CurrentSessionSection
+          currentJam={currentJam}
+          isUpcomingTab={isUpcomingTab}
+          isCurrentSessionReorderLocked={isCurrentSessionReorderLocked}
+          draggedSessionId={draggedSessionId}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          onDragEnd={handleDragEnd}
+        />
         <Tabs
           value={tabValue}
           onChange={handleTabChange}
@@ -142,23 +175,18 @@ export default function SessionList({ onAction }: SessionListProps) {
           <Tab label="Completed" />
         </Tabs>
         <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
-          <List disablePadding>
-            {filteredSessions.map((jamSession, index) => (
-              <Fragment key={jamSession.id}>
-                <JamSession session={jamSession} />
-                {index < filteredSessions.length - 1 && (
-                  <Divider component="li" />
-                )}
-              </Fragment>
-            ))}
-            {filteredSessions.length === 0 && (
-              <Box sx={{ p: 3, textAlign: "center" }}>
-                <Typography variant="body2" color="text.secondary">
-                  {tabValue === 0 ? "No upcoming jams" : "No completed jams"}
-                </Typography>
-              </Box>
-            )}
-          </List>
+          {isUpcomingTab ? (
+            <UpcomingSessionsList
+              sessions={upcomingSessions}
+              draggedSessionId={draggedSessionId}
+              onDragStart={handleDragStart}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              onDragEnd={handleDragEnd}
+            />
+          ) : (
+            <CompletedSessionsList sessions={completedJamSessions} />
+          )}
         </Box>
         <FooterContainer>
           <AddJamSessionButton onAdd={handleAction} />

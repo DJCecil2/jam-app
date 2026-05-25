@@ -52,6 +52,11 @@ type RemoveJamSessionPayload = {
   id: string;
 };
 
+type ReorderJamSessionsPayload = {
+  sourceId: string;
+  targetId: string;
+};
+
 export function sortJamMembers(
   members: JamMember[],
   instruments: InstrumentsState,
@@ -159,6 +164,65 @@ const jamSessionsSlice = createSlice({
 
       return state;
     },
+    reorderJamSessions(
+      state,
+      { payload }: PayloadAction<ReorderJamSessionsPayload>,
+    ) {
+      const upcomingSessions = state.filter((session) => !session.completed);
+      const currentSession = upcomingSessions[0];
+
+      const isCurrentSessionLocked =
+        currentSession !== undefined &&
+        (currentSession.startedAt !== undefined ||
+          (currentSession.pausedDuration ?? 0) > 0);
+
+      if (
+        isCurrentSessionLocked &&
+        (payload.sourceId === currentSession.id ||
+          payload.targetId === currentSession.id)
+      ) {
+        return state;
+      }
+
+      const sourceIndex = upcomingSessions.findIndex(
+        (session) => session.id === payload.sourceId,
+      );
+      const targetIndex = upcomingSessions.findIndex(
+        (session) => session.id === payload.targetId,
+      );
+
+      if (sourceIndex === -1 || targetIndex === -1 || sourceIndex === targetIndex) {
+        return state;
+      }
+
+      const sourceSession = upcomingSessions[sourceIndex];
+      const targetSession = upcomingSessions[targetIndex];
+
+      if (sourceSession.completed || targetSession.completed) {
+        return state;
+      }
+
+      const [movedSession] = upcomingSessions.splice(sourceIndex, 1);
+
+      if (!movedSession) {
+        return state;
+      }
+
+      upcomingSessions.splice(targetIndex, 0, movedSession);
+
+      let upcomingIndex = 0;
+
+      for (let index = 0; index < state.length; index += 1) {
+        if (state[index].completed) {
+          continue;
+        }
+
+        state[index] = upcomingSessions[upcomingIndex];
+        upcomingIndex += 1;
+      }
+
+      return state;
+    },
     resetJamSessions() {
       return initialState;
     },
@@ -172,6 +236,7 @@ export const {
   startJamSession,
   pauseJamSession,
   removeJamSession,
+  reorderJamSessions,
   resetJamSessions,
 } = jamSessionsSlice.actions;
 
