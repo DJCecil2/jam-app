@@ -6,6 +6,7 @@ export function useJamSessions() {
   return useAppSelector(({ jamSessions, instruments }) =>
     jamSessions.map((session) => ({
       ...session,
+      completed: session.completed ?? false,
       members: sortJamMembers(session.members, instruments),
     })),
   );
@@ -16,7 +17,7 @@ export function useCompletedJamSessions() {
   return useMemo(
     () =>
       jamSessions
-        .filter((session) => session.duration !== undefined)
+        .filter((session) => session.completed)
         .sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0)),
     [jamSessions],
   );
@@ -25,7 +26,7 @@ export function useCompletedJamSessions() {
 export function useUpcomingJamSessions() {
   const jamSessions = useJamSessions();
   return useMemo(
-    () => jamSessions.filter((session) => session.duration === undefined),
+    () => jamSessions.filter((session) => !session.completed),
     [jamSessions],
   );
 }

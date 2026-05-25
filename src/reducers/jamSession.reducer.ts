@@ -4,6 +4,7 @@ import { InstrumentsState } from "./instruments.reducer";
 export type JamSession = {
   id: string;
   members: JamMember[];
+  completed: boolean;
   startedAt?: number;
   pausedDuration?: number;
   duration?: number;
@@ -22,7 +23,10 @@ export type JamSessionsState = JamSession[];
  */
 const initialState = [] satisfies JamSessionsState as JamSessionsState;
 
-type AddJamSessionPayload = Omit<JamSession, "id" | "duration" | "startedAt">;
+type AddJamSessionPayload = Omit<
+  JamSession,
+  "id" | "duration" | "startedAt" | "completed" | "completedAt"
+>;
 
 type UpdateJamSessionDurationPayload = {
   id: string;
@@ -80,6 +84,8 @@ const jamSessionsSlice = createSlice({
       state.push({
         id: nanoid(),
         ...payload,
+        completed: false,
+        completedAt: undefined,
       });
 
       return state;
@@ -104,6 +110,7 @@ const jamSessionsSlice = createSlice({
 
       if (jamSession) {
         jamSession.duration = payload.duration;
+        jamSession.completed = true;
         jamSession.startedAt = undefined;
         jamSession.pausedDuration = undefined;
         jamSession.completedAt = Date.now();
@@ -135,7 +142,22 @@ const jamSessionsSlice = createSlice({
       state,
       { payload }: PayloadAction<RemoveJamSessionPayload>,
     ) {
-      return state.filter((session) => session.id !== payload.id);
+      const jamSession = state.find((session) => session.id === payload.id);
+
+      if (jamSession) {
+        if (jamSession.completed && jamSession.duration === undefined) {
+          jamSession.completed = false;
+          jamSession.completedAt = undefined;
+          return state;
+        }
+
+        jamSession.completed = true;
+        jamSession.startedAt = undefined;
+        jamSession.pausedDuration = undefined;
+        jamSession.completedAt = Date.now();
+      }
+
+      return state;
     },
     resetJamSessions() {
       return initialState;

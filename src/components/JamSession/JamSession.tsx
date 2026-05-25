@@ -68,7 +68,8 @@ export default function JamSession({
     dispatch(pauseJamSession({ id: session.id, pausedDuration }));
   };
 
-  const isUpcoming = session.duration === undefined;
+  const isSoftDeleted = session.completed && session.duration === undefined;
+  const isUpcoming = !session.completed;
 
   const members = session.members;
 
@@ -111,7 +112,7 @@ export default function JamSession({
     <ListItem disablePadding sx={{ py: 1 }}>
       <Stack width="100%" spacing={1}>
         <Box sx={{ position: "relative" }}>
-          {isUpcoming && (
+          {(isUpcoming || isSoftDeleted) && (
             <>
               <IconButton
                 size="small"
@@ -139,13 +140,17 @@ export default function JamSession({
                   horizontal: "right",
                 }}
               >
-                <MenuItem
-                  onClick={handleEdit}
-                  disabled={isCurrent && currentTime !== 0}
-                >
-                  Edit
+                {!isSoftDeleted && (
+                  <MenuItem
+                    onClick={handleEdit}
+                    disabled={isCurrent && currentTime !== 0}
+                  >
+                    Edit
+                  </MenuItem>
+                )}
+                <MenuItem onClick={handleDelete}>
+                  {isSoftDeleted ? "Restore" : "Delete"}
                 </MenuItem>
-                <MenuItem onClick={handleDelete}>Delete</MenuItem>
               </Menu>
             </>
           )}
@@ -161,7 +166,7 @@ export default function JamSession({
               pausedDuration={session.pausedDuration}
             />
           )}
-          {!isCurrent && session.duration !== undefined && (
+          {!isCurrent && session.completed && session.duration !== undefined && (
             <Typography
               variant="caption"
               align="center"
