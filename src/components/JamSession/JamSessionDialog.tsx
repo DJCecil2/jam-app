@@ -2,15 +2,17 @@
 import { useInstruments } from "../../selectors/instruments.selectors";
 import { useAppDispatch } from "../../hooks";
 import {
-  Autocomplete,
   Button,
   Chip,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -172,26 +174,36 @@ function MusicianSelector({
     }
 
     inputs.push(
-      <Autocomplete
-        key={inputId}
-        id={inputId}
-        options={musicians}
-        fullWidth
-        getOptionLabel={(musician) => musician.name}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
-        value={musicians.find((m) => m.id === value) || null}
-        onChange={(_, newValue) => {
-          onChange(inputId, newValue ? newValue.id : "");
-        }}
-        getOptionDisabled={(musician) =>
-          Object.values(selectedValues).includes(musician.id) &&
-          musician.id !== value
-        }
-        renderInput={(params) => <TextField {...params} label={label} />}
-        renderOption={(props, musician) => {
-          const { key, ...optionProps } = props;
-          return (
-            <li key={key} {...optionProps}>
+      <FormControl key={inputId} fullWidth>
+        <InputLabel id={`${inputId}-label`}>{label}</InputLabel>
+        <Select
+          labelId={`${inputId}-label`}
+          id={inputId}
+          value={value}
+          label={label}
+          onChange={(event) => {
+            onChange(inputId, event.target.value);
+          }}
+          renderValue={(selected) => {
+            if (!selected) {
+              return <Typography color="text.secondary">None</Typography>;
+            }
+
+            return musicians.find((musician) => musician.id === selected)?.name || "";
+          }}
+        >
+          <MenuItem value="">
+            <Typography color="text.secondary">None</Typography>
+          </MenuItem>
+          {musicians.map((musician) => (
+            <MenuItem
+              key={musician.id}
+              value={musician.id}
+              disabled={
+                Object.values(selectedValues).includes(musician.id) &&
+                musician.id !== value
+              }
+            >
               <Stack
                 direction="row"
                 spacing={1}
@@ -231,10 +243,10 @@ function MusicianSelector({
                   | Total: {formatTime(musician.stats.totalDuration)}
                 </Typography>
               </Stack>
-            </li>
-          );
-        }}
-      />,
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>,
     );
   }
 
